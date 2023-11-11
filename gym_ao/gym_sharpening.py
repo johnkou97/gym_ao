@@ -55,6 +55,7 @@ class Sharpening_AO_system():
         self.tot_rewards = []
         self.reward_range = (0, np.inf)
         self.fig, self.axes = plt.subplots(2, 2, figsize=(10, 8))
+        self.wf_rms = WF_RMS
 
     def step(self, action):
         self.deformable_mirror.actuators += action / (2 * np.pi) * self.wavelength

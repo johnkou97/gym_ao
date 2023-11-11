@@ -6,22 +6,22 @@ from gym.spaces import Box
 # Global variables
 DIAMETER = 8  # meter
 WAVELENGTH = 1e-6  # meter
-RESOLUTION = 256  # pixels
+RESOLUTION = 256  # pixels # reduced resolution to speed up training
 F_NUMBER = 40
-OVERSAMPLING = 3  # pixels
-N_AIRY = 8
+OVERSAMPLING = 3  # pixels 
+N_AIRY = 8 # size of the focal plane image
 N_PHOTONS = 1e10
-N_MODES = 20
-N_ACT_ACROSS = 20
-MODE_BASIS = 'zernike'
-FILTERED = True
-WF_RMS = 1.7
+N_MODES = 20 # used if MODE_BASIS = 'zernike'
+N_ACT_ACROSS = 20 # used if MODE_BASIS = 'actuators'
+MODE_BASIS = 'zernike' # 'zernike' or 'actuators'
+FILTERED = True # easy mode
+WF_RMS = 1.7 # rms of the wavefront error
 DT = 1  # s
 DECOR_TIME = 30  # s
 PL_IDX = -2.5
 
 
-class Sharpening_AO_system():
+class Sharpening_AO_system_easy():
     def __init__(self):
         self.diameter = DIAMETER
         self.wavelength = WAVELENGTH
@@ -61,6 +61,7 @@ class Sharpening_AO_system():
         self.tot_rewards = []
         self.reward_range = (0, np.inf)
         self.fig, self.axes = plt.subplots(2, 2, figsize=(10, 8))
+        self.wf_rms = WF_RMS
 
     def step(self, action):
         action = action * self.modal_norm
@@ -208,7 +209,7 @@ class Sharpening_AO_system():
 
 
 def run_sharpening():
-    env = Sharpening_AO_system()
+    env = Sharpening_AO_system_easy()
     N_iter = 100
     N_episode = 10
 

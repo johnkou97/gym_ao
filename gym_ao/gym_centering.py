@@ -12,6 +12,7 @@ OVERSAMPLING = 3  # pixels
 N_AIRY = 8
 N_PHOTONS = 1e10
 N_MODES = 2
+N_ACT_ACROSS = 10 # not used if MODE_BASIS = 'zernike'
 MODE_BASIS = 'zernike'
 FILTERED = True
 WF_RMS = 3
@@ -27,7 +28,7 @@ def get_centers(im):
    y_cent = np.nansum(im*x[:, None])/np.nansum(im) - 0.5
    return np.array([x_cent, y_cent])
 
-class Sharpening_AO_system():
+class Centering_AO_system():
     def __init__(self):
         self.diameter = DIAMETER
         self.wavelength = WAVELENGTH
@@ -68,6 +69,7 @@ class Sharpening_AO_system():
         self.tot_rewards = []
         self.reward_range = (0, np.inf)
         self.fig, self.axes = plt.subplots(2, 2, figsize=(10, 8))
+        self.wf_rms = WF_RMS
 
     def step(self, action):
         action = action * self.modal_norm
@@ -215,7 +217,7 @@ class Sharpening_AO_system():
 
 
 def run_sharpening():
-    env = Sharpening_AO_system()
+    env = Centering_AO_system()
     N_iter = 100
     N_episode = 10
 
